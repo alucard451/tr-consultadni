@@ -4,7 +4,7 @@ import Form from "./component/Form";
 import { applyAnimation } from "../animations/animation";
 
 export default function Home() {
-  const [result, setResult] = useState(null);
+  const [result, setResult] = useState("null");
   useEffect(() => {
     applyAnimation();
   }, []);
@@ -25,11 +25,15 @@ export default function Home() {
       }
 
       const data = await response.json();
-      setResult(data);
-      console.log(result);
+      console.log(data);
+
+      if (data.success != false) {
+        setResult(data);
+        console.log(result);
+      }
     } catch (error) {
       console.error("Error al consultar el DNI", error);
-      setResult(null);
+      setResult("null");
     }
   };
 
@@ -51,18 +55,19 @@ export default function Home() {
             <div className="info_content">
               <p>
                 <span>DNI:</span>
-                {result && result.data.numero}
+                {result != "null" ? result.data.numero : "Error en consulta"}
               </p>
               <p>
                 <span>Nombre:</span>
-                {result && result.data.nombres}
+                {result != "null" ? result.data.nombres : "Error en consulta"}
               </p>
               <p>
                 <span>Apellido:</span>
-                {result &&
-                  result.data.apellido_paterno +
+                {result != "null"
+                  ? result.data.apellido_paterno +
                     " " +
-                    result.data.apellido_materno}
+                    result.data.apellido_materno
+                  : "Error en consulta"}
               </p>
             </div>
           </div>
